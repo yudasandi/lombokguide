@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 export default function Home() { 
   
   const tours = [
@@ -160,7 +160,27 @@ const destinations = [
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 const [scrolled, setScrolled] = useState(false);
+const menuRef = useRef<HTMLDivElement | null>(null);
 
+useEffect(() => {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(event.target as Node)
+    ) {
+      setMenuOpen(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+  };
+}, []);
 
 useEffect(() => {
   const handleScroll = () => {
@@ -300,28 +320,36 @@ if (
 
 </div> 
         </div>
-          {/* Mobile Menu Overlay + Panel */}
+         {/* Mobile Menu */}
 <div
-  className={`fixed inset-0 bg-black/60 md:hidden transition-opacity duration-300 ${
-    menuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-  }`}
-  onClick={() => setMenuOpen(false)}
-/>
-
-<div
-  className={`fixed top-0 right-0 h-full w-64 bg-black/95 p-6 md:hidden z-50 transform transition-transform duration-300 ${
-    menuOpen ? "translate-x-0" : "translate-x-full"
+  ref={menuRef}
+  className={`fixed top-0 right-0 z-50 h-screen w-64 border-l border-white/10 bg-black/20 backdrop-blur-xl p-6 transition-transform duration-300 md:hidden ${
+    menuOpen
+      ? "translate-x-0"
+      : "translate-x-full"
   }`}
 >
-  <div className="flex flex-col gap-6 mt-10 text-right">
+  <div className="mt-24 flex flex-col gap-8 text-right text-xl text-white">
 
-    <a href="#home" onClick={() => setMenuOpen(false)}>Home</a>
-    <a href="#tours" onClick={() => setMenuOpen(false)}>Tours</a>
-    <a href="#destinations" onClick={() => setMenuOpen(false)}>Destinations</a>
-    <a href="#guides" onClick={() => setMenuOpen(false)}>Guides</a>
+    <a href="#home" onClick={() => setMenuOpen(false)}>
+      Home
+    </a>
+
+    <a href="#tours" onClick={() => setMenuOpen(false)}>
+      Tours
+    </a>
+
+    <a href="#destinations" onClick={() => setMenuOpen(false)}>
+      Destinations
+    </a>
+
+    <a href="#guides" onClick={() => setMenuOpen(false)}>
+      Guides
+    </a>
 
   </div>
 </div>
+  
 </nav>
 
       {/* Hero Section */}
@@ -370,9 +398,16 @@ if (
   Explore Tours
 </button>
 
-              <button className="rounded-full border border-white px-8 py-4 transition hover:bg-white hover:text-black">
-                Watch Experience
-              </button>
+             <button
+  onClick={() =>
+    document
+      .getElementById("testimonials")
+      ?.scrollIntoView({ behavior: "smooth" })
+  }
+  className="rounded-full border border-white px-8 py-4 transition hover:bg-white hover:text-black"
+>
+  Watch Experience
+</button>
 
             </div>
 
@@ -526,9 +561,9 @@ if (
         <button
   onClick={() =>
     window.open(
-      "https://wa.me/6287860139009?text=Hi%20saya%20mau%20book%20tour%20ini",
-      "_blank"
-    )
+  `https://wa.me/6287860139009?text=Hi,%20I%20want%20to%20book%20${tour.title}`,
+  "_blank"
+)
   }
   className="rounded-full bg-white px-5 py-3 text-black transition hover:scale-105"
 >
@@ -643,7 +678,10 @@ if (
 </section>
 
 {/* Testimonials */}
-<section className="bg-zinc-950 px-6 py-24 text-white">
+<section
+  id="testimonials"
+  className="bg-zinc-950 px-6 py-24 text-white"
+>
 
   <div className="mx-auto max-w-7xl">
 
@@ -797,30 +835,29 @@ if (
 
       <ul className="space-y-4 text-gray-400">
 
-        <li>
-          <a href="#" className="transition hover:text-white">
-            Home
-          </a>
-        </li>
+       <li>
+  <a href="#home" className="transition hover:text-white">
+    Home
+  </a>
+</li>
 
-        <li>
-          <a href="#" className="transition hover:text-white">
-            Tours
-          </a>
-        </li>
+<li>
+  <a href="#tours" className="transition hover:text-white">
+    Tours
+  </a>
+</li>
 
-        <li>
-          <a href="#" className="transition hover:text-white">
-            Destinations
-          </a>
-        </li>
+<li>
+  <a href="#destinations" className="transition hover:text-white">
+    Destinations
+  </a>
+</li>
 
-        <li>
-          <a href="#" className="transition hover:text-white">
-            Contact
-          </a>
-        </li>
-
+<li>
+  <a href="#guides" className="transition hover:text-white">
+    Guides
+  </a>
+</li>
       </ul>
 
     </div>
