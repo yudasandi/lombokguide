@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     siteName: "LombokGuide",
     images: [
       {
-        url: "https://lombokguide.vercel.app/og-image.png",
+        url: "public/og-image.png",
         width: 1200,
         height: 630,
       },
