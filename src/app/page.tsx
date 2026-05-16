@@ -158,6 +158,15 @@ const destinations = [
   },
 ];
   const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedTour, setSelectedTour] = useState("");
+const [bookingOpen, setBookingOpen] = useState(false);
+
+const [formData, setFormData] = useState({
+  name: "",
+  whatsapp: "",
+  date: "",
+  people: "",
+});
   const [activeSection, setActiveSection] = useState("home");
 const [scrolled, setScrolled] = useState(false);
 const menuRef = useRef<HTMLDivElement | null>(null);
@@ -559,12 +568,10 @@ if (
           </div>
 
         <button
-  onClick={() =>
-    window.open(
-  `https://wa.me/6287860139009?text=Hi,%20I%20want%20to%20book%20${tour.title}`,
-  "_blank"
-)
-  }
+  onClick={() => {
+    setSelectedTour(tour.title);
+    setBookingOpen(true);
+  }}
   className="rounded-full bg-white px-5 py-3 text-black transition hover:scale-105"
 >
   Book Now
@@ -924,6 +931,100 @@ if (
   </div>
 
 </footer>
+{/* Booking Modal */}
+{bookingOpen && (
+  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-6">
+
+    <div className="w-full max-w-lg rounded-3xl bg-zinc-950 p-8 text-white">
+
+      <div className="mb-6 flex items-center justify-between">
+
+        <div>
+          <p className="text-sm text-gray-400">
+            Booking Tour
+          </p>
+
+          <h2 className="text-3xl font-bold">
+            {selectedTour}
+          </h2>
+        </div>
+
+        <button
+          onClick={() => setBookingOpen(false)}
+          className="text-2xl text-gray-400 hover:text-white"
+        >
+          ✕
+        </button>
+
+      </div>
+
+      <div className="space-y-5">
+
+        <input
+          type="text"
+          placeholder="Your Name"
+          value={formData.name}
+          onChange={(e) =>
+            setFormData({ ...formData, name: e.target.value })
+          }
+          className="w-full rounded-2xl border border-white/10 bg-white/5 px-5 py-4 outline-none"
+        />
+
+        <input
+          type="text"
+          placeholder="WhatsApp Number"
+          value={formData.whatsapp}
+          onChange={(e) =>
+            setFormData({ ...formData, whatsapp: e.target.value })
+          }
+          className="w-full rounded-2xl border border-white/10 bg-white/5 px-5 py-4 outline-none"
+        />
+
+        <input
+          type="date"
+          value={formData.date}
+          onChange={(e) =>
+            setFormData({ ...formData, date: e.target.value })
+          }
+          className="w-full rounded-2xl border border-white/10 bg-white/5 px-5 py-4 outline-none"
+        />
+
+        <input
+          type="number"
+          placeholder="Total People"
+          value={formData.people}
+          onChange={(e) =>
+            setFormData({ ...formData, people: e.target.value })
+          }
+          className="w-full rounded-2xl border border-white/10 bg-white/5 px-5 py-4 outline-none"
+        />
+
+        <button
+          onClick={() => {
+            const message =
+              `Hi, I want to book a tour:%0A%0A` +
+              `Tour: ${selectedTour}%0A` +
+              `Name: ${formData.name}%0A` +
+              `WhatsApp: ${formData.whatsapp}%0A` +
+              `Date: ${formData.date}%0A` +
+              `Total People: ${formData.people}`;
+
+            window.open(
+              `https://wa.me/6287860139009?text=${message}`,
+              "_blank"
+            );
+          }}
+          className="w-full rounded-2xl bg-white py-4 font-semibold text-black transition hover:scale-[1.02]"
+        >
+          Continue to WhatsApp
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+)}
     </main>
   );
 }
