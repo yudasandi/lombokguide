@@ -13,35 +13,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LombokGuide | Explore The Beauty Of Lombok",
+  title: "LombokGuide | Explore Lombok Paradise",
   description:
-    "Discover beaches, mountains, waterfalls, and unforgettable local experiences in Lombok with trusted local guides.",
-    verification: {
-  google: "Ue78BtCj92_IGh-7viTtnYlY9Rocj3WwGGS8IAM_qDw",
-},
-    
-  keywords: [
-    "Lombok tour",
-    "Lombok travel",
-    "Gili Islands",
-    "Mount Rinjani",
-    "Lombok snorkeling",
-    "Lombok guide",
-    "Lombok trip",
-    "Indonesia travel",
-  ],
+    "Discover beaches, mountains, waterfalls, and unforgettable Lombok experiences with trusted local guides.",
+
+  openGraph: {
+    title: "LombokGuide",
+    description:
+      "Explore Lombok Paradise with unforgettable tours and local experiences.",
+    url: "https://lombokguide.vercel.app",
+    siteName: "LombokGuide",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
-    </html>
-  );
-}
