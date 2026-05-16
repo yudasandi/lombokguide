@@ -14,23 +14,45 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "LombokGuide | Explore Lombok Paradise",
+
   description:
     "Discover beaches, mountains, waterfalls, and unforgettable Lombok experiences with trusted local guides.",
 
   openGraph: {
-    title: "LombokGuide",
+    title: "LombokGuide | Explore Lombok Paradise",
+
     description:
       "Explore Lombok Paradise with unforgettable tours and local experiences.",
+
     url: "https://lombokguide.vercel.app",
+
     siteName: "LombokGuide",
+
     images: [
       {
-        url: "public/og-image.png",
+        url: "https://lombokguide.vercel.app/og-image.png",
         width: 1200,
         height: 630,
+        alt: "LombokGuide",
       },
     ],
+
     locale: "en_US",
     type: "website",
   },
 };
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable}`}
+    >
+      <body>{children}</body>
+    </html>
+  );
+}
