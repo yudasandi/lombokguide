@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { supabase } from "../lib/supabase";
 export default function Home() { 
   
   const tours = [
@@ -1000,19 +1001,47 @@ if (
         />
 
         <button
-          onClick={() => {
-            const message =
-              `Hi, I want to book a tour:%0A%0A` +
-              `Tour: ${selectedTour}%0A` +
-              `Name: ${formData.name}%0A` +
-              `WhatsApp: ${formData.whatsapp}%0A` +
-              `Date: ${formData.date}%0A` +
-              `Total People: ${formData.people}`;
+          onClick={async () => {
+            if (
+    !formData.name ||
+    !formData.whatsapp ||
+    !formData.date ||
+    !formData.people
+  ) {
+    alert("Please complete all booking information.");
+    return;
+  }
+            const message = encodeURIComponent(
+  `Hi, I want to book a tour:
 
-            window.open(
-              `https://wa.me/6287860139009?text=${message}`,
-              "_blank"
-            );
+Tour: ${selectedTour}
+Name: ${formData.name}
+WhatsApp: ${formData.whatsapp}
+Date: ${formData.date}
+Total People: ${formData.people}`
+);
+await supabase.from("bookings").insert([
+  {
+    name: formData.name,
+    whatsapp: formData.whatsapp,
+    tour: selectedTour,
+    date: formData.date,
+    people: Number(formData.people),
+  },
+]);
+
+          window.open(
+  `https://wa.me/6287860139009?text=${message}`,
+  "_blank"
+);
+            setBookingOpen(false);
+
+setFormData({
+  name: "",
+  whatsapp: "",
+  date: "",
+  people: "",
+});
           }}
           className="w-full rounded-2xl bg-white py-4 font-semibold text-black transition hover:scale-[1.02]"
         >
